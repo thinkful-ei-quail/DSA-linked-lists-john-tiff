@@ -27,7 +27,7 @@ class LinkedList {
         let currNode = this.head
         let previousNode = null
         if (!currNode) {
-           return this.head = new _Node(newItem, null)
+            return this.head = new _Node(newItem, null)
         }
         while (currNode.value !== targetItem) {
             if (currNode.next === null) {
@@ -45,9 +45,9 @@ class LinkedList {
     }
 
     insertAfter(newItem, targetItem) {
-       const targetNode = this.find(targetItem)
-       if (targetNode) {
-           targetNode.next = new _Node(newItem, targetNode.next) // left side is the target and next describes what's after, right side is inserting new node
+        const targetNode = this.find(targetItem)
+        if (targetNode) {
+            targetNode.next = new _Node(newItem, targetNode.next) // left side is the target and next describes what's after, right side is inserting new node
         }
     }
     insertAt(newItem, i) {
@@ -55,7 +55,7 @@ class LinkedList {
         if (i === 0) {
             return this.head = new _Node(newItem, null)
         }
-        for (let j = 1; j < i ; j++) {
+        for (let j = 1; j < i; j++) {
             if (currNode.next === null) {
                 return currNode.next = new _Node(newItem, currNode.next)
             }
@@ -63,7 +63,7 @@ class LinkedList {
         }
         return currNode.next = new _Node(newItem, currNode.next)
     }
-    find(item) { 
+    find(item) {
         // Start at the head
         let currNode = this.head;
         // If the list is empty
@@ -85,7 +85,7 @@ class LinkedList {
         // Found it
         return currNode;
     }
-    remove(item){ 
+    remove(item) {
         // If the list is empty
         if (!this.head) {
             return null;
@@ -138,7 +138,7 @@ isEmpty = (list) => list.head === null
 findPrevious = (list, targetItem) => {
     let currNode = list.head
     let previousNode = null
-    while (currNode && currNode.value !== targetItem ) {
+    while (currNode && currNode.value !== targetItem) {
         previousNode = currNode
         currNode = currNode.next
     }
@@ -156,26 +156,7 @@ findLast = (list) => {
         currNode = currNode.next
     }
     return toe
-} 
-
-main = () => {
-    const SLL = new LinkedList() 
-    SLL.insertFirst('Apollo')
-    SLL.insertFirst('Boomer')
-    SLL.insertFirst('Helo')
-    SLL.insertFirst('Husker')
-    SLL.insertFirst('Starbuck')
-    SLL.insertFirst('Tauhida')
-    SLL.remove('Squirrel')
-    SLL.insertBefore('Athena', 'Boomer')
-    SLL.insertAfter('Hotdog', 'Helo')
-    SLL.insertAt('Kat', 2)
-    SLL.remove('Tauhida')
-    display(SLL)
-    console.log(lengthOf(SLL))
-    return SLL
 }
-main()
 
 // 4. Mystery Program
 // (Q): What does it do? What's it's time complexity?
@@ -205,23 +186,118 @@ function WhatDoesThisProgramDo(lst) {
 // keep track of last node
 // stop once last node = first
 
-// reverse = (list) => {
-//     let currNode = list.head
-//     while (currNode !== null) {
-//         currNode = currNode.next
-//     }
+reverse = (list) => {
+    let arr = []
+    let currNode = list.head
+    while (currNode !== null) {
+        arr.push(currNode)
+        currNode = currNode.next
+    } for (let i = arr.length - 1; i >= 0; i-- ) { // for(let x = arr.length; x --> 0;)
+        arr[i].next = arr[i-1]
+    }
+    arr[0].next = null
+    list.head = arr.pop() // changes head to last item in arr
+}
+
+// let tail
+// reverseRecursion = (node) => {
+//     if (node.next === null) { return tail = node } // exit
+//     const sublistTail = reverseRecursion(node.next);
+//     sublistTail.next = node;
+//     return node;
 // }
 
-let tail 
-reverseRecursion = (node) => {
-    if (node.next === null) { return tail = node} // exit
-    const sublistTail = reverseRecursion(node.next);
-    sublistTail.next = node;
-    return node; 
-}
-
-reverse = (list) => {
-    reverseRecursion(list.head)
-}
+// reverse = (list) => {
+//     reverseRecursion(list.head)
+// }
 
 (1, 2, 3, 4, 5)
+
+
+// 6. find 3rd from last
+thirdFromEnd = (list) => {
+    let currNode = list.head
+    let prevNode = null
+    let prevPrevNode = null
+    let prevPrevPrevNode = null
+    while (currNode !== null) {
+        prevPrevPrevNode = prevPrevNode
+        prevPrevNode = prevNode
+        prevNode = currNode
+        currNode = currNode.next
+    }
+    return prevPrevPrevNode.value
+}
+
+thirdFromJohn = (list) => {
+    let nodes = [null, null, null, list.head];
+    while (nodes[3]) {
+        nodes.shift();
+        nodes.push(nodes[2].next);
+    }
+    return nodes[0].value;
+}
+
+// 7. Middle of List
+middle = (list) => {
+    const arr = []
+    let currNode = list.head
+    while (currNode !== null) {        
+        arr.push(currNode)
+        currNode = currNode.next
+    }
+    return arr[Math.floor(arr.length/2)].value
+}
+
+main = () => {
+    const SLL = new LinkedList()
+    SLL.insertFirst('Apollo')
+    SLL.insertFirst('Boomer')
+    SLL.insertFirst('Helo')
+    SLL.insertFirst('Husker')
+    SLL.insertFirst('Starbuck')
+    SLL.insertFirst('Tauhida')
+    SLL.remove('Squirrel')
+    SLL.insertBefore('Athena', 'Boomer')
+    SLL.insertAfter('Hotdog', 'Helo')
+    SLL.insertLast('Pizza')
+    SLL.insertAt('Kat', 2)
+    SLL.remove('Tauhida')
+    display(SLL)
+    console.log(lengthOf(SLL))
+    console.log('tiff', thirdFromEnd(SLL))
+    console.log('john', thirdFromJohn(SLL))
+    console.log(middle(SLL))
+    return SLL
+}
+main()
+
+// 8. detect broken cycle in list: 'all cycles are broken lists'
+detectsCycle = (list) => {
+    const set = new Set()
+    let currNode = list.head
+    let nodeCount = 0
+    while (currNode !== null) {
+        ++nodeCount
+        set.add(currNode)
+        currNode = currNode.next
+        if (nodeCount !== set.size) {
+            return true 
+        }
+    }
+    return false 
+}
+
+cycle = () => {
+    const cycleList = new LinkedList()
+    cycleList.insertLast('banana')
+    cycleList.insertLast('apple')
+    cycleList.insertLast('strawberry')
+    cycleList.insertLast('grapes')
+    cycleList.insertLast('chocolate')
+    cycleList.find('chocolate').next = cycleList.find('apple')
+    // display(cycleList)
+    console.log(detectsCycle(cycleList))
+    return cycleList
+}
+cycle()
