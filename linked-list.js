@@ -45,7 +45,7 @@ class LinkedList {
     }
 
     insertAfter(newItem, targetItem) {
-       const targetNode = find(targetItem)
+       const targetNode = this.find(targetItem)
        if (targetNode) {
            targetNode.next = new _Node(newItem, targetNode.next) // left side is the target and next describes what's after, right side is inserting new node
         }
@@ -79,7 +79,7 @@ class LinkedList {
             }
             else {
                 // Otherwise, keep looking 
-                currNode = currNode.next;
+                currNode = currNode.next;  // steps to next node
             }
         }
         // Found it
@@ -106,14 +106,60 @@ class LinkedList {
             currNode = currNode.next;
         }
         if (currNode === null) {
-            console.log('Item not found');
+            console.log('ERROR: Item not found');
             return;
         }
-        previousNode.next = currNode.next;
+        previousNode.next = currNode.next;  // removes item
     }
 }
 
-main = () => { const SLL = new LinkedList() 
+display = (list) => {
+    let currNode = list.head
+    console.log('-~-head-~-')
+    while (currNode !== null) {
+        console.log(currNode.value)
+        currNode = currNode.next
+    }
+    console.log('-~-tail-~-')
+}
+
+lengthOf = (list) => {
+    let currNode = list.head
+    let total = 0
+    while (currNode !== null) {
+        currNode = currNode.next
+        ++total
+    }
+    return total
+}
+
+isEmpty = (list) => list.head === null
+
+findPrevious = (list, targetItem) => {
+    let currNode = list.head
+    let previousNode = null
+    while (currNode && currNode.value !== targetItem ) {
+        previousNode = currNode
+        currNode = currNode.next
+    }
+    if (currNode === null) {
+        return 'item not found'
+    }
+    return previousNode
+}
+
+findLast = (list) => {
+    let currNode = list.head
+    let toe = null
+    while (currNode !== null) {
+        toe = currNode
+        currNode = currNode.next
+    }
+    return toe
+} 
+
+main = () => {
+    const SLL = new LinkedList() 
     SLL.insertFirst('Apollo')
     SLL.insertFirst('Boomer')
     SLL.insertFirst('Helo')
@@ -121,7 +167,61 @@ main = () => { const SLL = new LinkedList()
     SLL.insertFirst('Starbuck')
     SLL.insertFirst('Tauhida')
     SLL.remove('Squirrel')
-
+    SLL.insertBefore('Athena', 'Boomer')
+    SLL.insertAfter('Hotdog', 'Helo')
+    SLL.insertAt('Kat', 2)
+    SLL.remove('Tauhida')
+    display(SLL)
+    console.log(lengthOf(SLL))
     return SLL
 }
-console.log(main())
+main()
+
+// 4. Mystery Program
+// (Q): What does it do? What's it's time complexity?
+// (A) Finds any duplicates and removes them
+// (A) O(n^2) bc loops are nested inside one another
+/*
+function WhatDoesThisProgramDo(lst) {
+    let current = lst.head;
+    while (current !== null) {
+        let newNode = current;
+        while (newNode.next !== null) {
+            if (newNode.next.value === current.value) {
+                newNode.next = newNode.next.next; // removes duplicate
+            }
+            else {
+                newNode = newNode.next;
+            }
+        }
+        current = current.next;
+    }
+}
+*/
+
+// 5. Reverse a List
+// run through list
+// push ea node to end of list
+// keep track of last node
+// stop once last node = first
+
+// reverse = (list) => {
+//     let currNode = list.head
+//     while (currNode !== null) {
+//         currNode = currNode.next
+//     }
+// }
+
+let tail 
+reverseRecursion = (node) => {
+    if (node.next === null) { return tail = node} // exit
+    const sublistTail = reverseRecursion(node.next);
+    sublistTail.next = node;
+    return node; 
+}
+
+reverse = (list) => {
+    reverseRecursion(list.head)
+}
+
+(1, 2, 3, 4, 5)
