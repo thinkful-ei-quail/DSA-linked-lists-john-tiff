@@ -211,8 +211,6 @@ reverse = (list) => {
 //     reverseRecursion(list.head)
 // }
 
-(1, 2, 3, 4, 5)
-
 
 // 6. find 3rd from last
 thirdFromEnd = (list) => {
@@ -268,6 +266,8 @@ main = () => {
     console.log('tiff', thirdFromEnd(SLL))
     console.log('john', thirdFromJohn(SLL))
     console.log(middle(SLL))
+    reverse(SLL)
+    display(SLL)
     return SLL
 }
 main()
